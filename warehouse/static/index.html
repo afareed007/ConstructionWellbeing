@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WorkSight · Video comparison</title><link rel="stylesheet" href="/static/style.css?v=2"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WorkSight · Video comparison</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="/static/style.css?v=2"><link rel="stylesheet" href="/static/live.css?v=1"></head>
 <body>
 <main>
   <header class="topbar">
@@ -67,4 +67,5 @@
 <dialog id="upload-dialog"><form id="upload-form"><div class="dialog-top"><h2>Upload video</h2><button type="button" class="icon-button" id="upload-close" aria-label="Close">×</button></div><p class="quiet">MP4 · 1–30 seconds · up to 80 MB</p><label>Video<input type="file" name="file" accept="video/mp4,.mp4" required></label><label>Task<input name="task" maxlength="80" placeholder="e.g. warehouse activity" required></label><label>Capture time<input type="datetime-local" name="captured_at" required></label><button class="button primary" type="submit">Process video →</button></form></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 <script src="/static/app.js?v=2" defer></script>
+<script src="/static/live.js?v=1" defer></script>
 </body></html>
