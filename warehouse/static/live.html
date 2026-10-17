@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WorkSight Live</title>
+<link rel="stylesheet" href="/static/live-page.css?v=1">
+</head>
+<body>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="/"><span class="brand-mark">W</span>WorkSight</a>
+    <div class="navlinks"><a href="/">Review</a><a href="/static/live.html" class="active">Live</a><a href="/static/feeds.html">Feeds</a></div>
+  </nav>
+
+  <header class="head">
+    <div>
+      <h1>Live site monitor</h1>
+      <p class="sub">Each camera window is checked by YOLO, ByteTrack and Cosmos. Findings appear the moment they happen.</p>
+    </div>
+    <div class="controls">
+      <label for="rec" class="foot">Camera</label>
+      <select id="rec"></select>
+      <button id="live" class="primary">● Go live</button>
+      <button id="skip" disabled>Skip to next event</button>
+      <select id="speed" title="Playback speed"><option value="1" selected>1×</option><option value="2">2×</option></select>
+    </div>
+  </header>
+
+  <div class="stats" id="stats">
+    <div class="stat"><b data-k="t">0:00</b><span>camera time</span></div>
+    <div class="stat"><b data-k="people">0</b><span>people tracked</span></div>
+    <div class="stat"><b data-k="windows">0</b><span>windows checked</span></div>
+    <div class="stat"><b data-k="routine">0</b><span>routine</span></div>
+    <div class="stat"><b data-k="flags">0</b><span>check-ins suggested</span></div>
+  </div>
+
+  <section class="panel">
+    <p class="label">Camera timeline · blue = baseline · green = routine · amber/red = check-in suggested</p>
+    <div class="tl" id="tl"><div class="playhead" id="ph"></div></div>
+    <div class="ticks" id="ticks"></div>
+  </section>
+
+  <div class="main">
+    <section class="panel now">
+      <div class="screen"><div class="hud"><span class="live">● LIVE</span><span id="cam">cam-1</span><span id="clock">0:00</span></div>
+        <video id="v" muted playsinline preload="auto"></video></div>
+      <div id="nowtext" class="empty">Pick a camera and press Go live.</div>
+    </section>
+    <section class="panel">
+      <p class="label">Live events, newest first</p>
+      <div class="list" id="list"><div class="empty">Events appear here as the footage plays.</div></div>
+    </section>
+  </div>
+  <p class="foot" id="foot">Simulated live replay of processed footage. Review flags suggest a human check-in and do not diagnose wellbeing.</p>
+</div>
+<script src="/static/live-page.js?v=1" defer></script>
+</body>
+</html>

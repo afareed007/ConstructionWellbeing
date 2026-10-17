@@ -55,7 +55,7 @@
     }
   }
 
-  const priorityKind = p => /high|urgent|priority|check/i.test(p || '') ? 'bad' : /elevated|medium|attention/i.test(p || '') ? 'warn' : 'ok';
+  const priorityKind = p => /high|urgent|priority|check/i.test(p || '') ? 'bad' : /elevated|medium|attention|review/i.test(p || '') ? 'warn' : 'ok';
   const flagged = a => a.report && priorityKind(a.report.review_priority) !== 'ok';
 
   async function poll() {

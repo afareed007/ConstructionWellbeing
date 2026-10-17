@@ -1,7 +1,7 @@
 /* Live layer: RideRisk-style dark control-room look, live pipeline bar and alert bubbles. */
 :root{--ink:#e7eaef;--muted:#97a1b1;--paper:#0f1318;--line:#2a313b;--green:#ff7a3d;--mint:#3a2114;
-  --panel:#171c23;--accent:#ff7a3d;--ok:#4cc38a;--warn:#e3b341;--bad:#f05252;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;color-scheme:dark}
-body{background:var(--paper);color:var(--ink);font-family:"Archivo",Inter,"Segoe UI",Arial,sans-serif}
+  --panel:#171c23;--accent:#ff7a3d;--ok:#4cc38a;--warn:#e3b341;--bad:#f05252;--mono:ui-monospace,Menlo,Consolas,monospace;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .brand-mark{background:var(--accent);color:#1a0d05}
 .primary{background:var(--accent)!important;color:#1a0d05!important;border-color:var(--accent)!important}
 .secondary,.subtle,.icon-button{background:transparent!important;color:var(--muted)!important;border-color:var(--line)!important}
@@ -40,7 +40,7 @@ table,th,td{border-color:var(--line)!important;color:var(--ink)}
 .lv-hud .live{background:#d92d20}
 
 /* alert bubbles */
-#lv-toasts{position:fixed;right:18px;top:18px;display:grid;gap:8px;z-index:50;width:min(380px,calc(100vw - 36px))}
+#lv-toasts{position:fixed;right:18px;top:84px;display:grid;gap:8px;z-index:50;width:min(380px,calc(100vw - 36px))}
 .lv-toast{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-left:5px solid var(--muted);border-radius:6px;padding:10px 12px;box-shadow:0 10px 28px rgba(0,0,0,.5);animation:lvslide .25s ease-out}
 .lv-toast b{display:block;font-size:14px}
 .lv-toast small{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:2px}
@@ -57,3 +57,4 @@ table,th,td{border-color:var(--line)!important;color:var(--ink)}
 .video-heading,.current-card .video-heading{background:transparent!important;color:var(--ink)!important}
 .current-card{border-color:var(--accent)!important}
 .report,.report *{color:var(--ink)!important}
+.navlink{text-decoration:none;display:inline-flex;align-items:center}
