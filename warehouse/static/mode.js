@@ -4,9 +4,9 @@
 //                    read from the Cosmos description of that window.
 (() => {
   const KEY = 'ws-mode';
-  let mode = 'detect';
-  try { mode = localStorage.getItem(KEY) || 'detect'; } catch {}
-  if (mode !== 'compare' && mode !== 'detect') mode = 'detect';
+  let mode = 'compare';
+  try { mode = localStorage.getItem(KEY) || 'compare'; } catch {}
+  if (mode !== 'compare' && mode !== 'detect') mode = 'compare';
   document.documentElement.dataset.mode = mode;
 
   const FATIGUE = [
