@@ -15,7 +15,7 @@
     <div class="lv-track"><div class="lv-fill"></div></div>`;
   const stats = document.createElement('section');
   stats.id = 'lv-stats';
-  stats.innerHTML = [['people', 'people tracked'], ['windows', 'windows analysed'], ['compared', 'Cosmos comparisons'], ['flags', 'need a check-in']]
+  stats.innerHTML = [['people', 'people tracked'], ['windows', 'windows analysed'], [(window.WSMode && WSMode.mode === 'detect') ? 'compared' : 'compared', (window.WSMode && WSMode.mode === 'detect') ? 'windows described' : 'Cosmos comparisons'], ['flags', (window.WSMode && WSMode.mode === 'detect') ? 'hazards + fatigue cues' : 'need a check-in']]
     .map(([k, l]) => `<div><b data-k="${k}">0</b><span>${l}</span></div>`).join('');
   const header = document.querySelector('.topbar');
   header.after(bar);
@@ -56,7 +56,8 @@
   }
 
   const priorityKind = p => /high|urgent|priority|check/i.test(p || '') ? 'bad' : /elevated|medium|attention|review/i.test(p || '') ? 'warn' : 'ok';
-  const flagged = a => a.report && priorityKind(a.report.review_priority) !== 'ok';
+  const DET = !!(window.WSMode && WSMode.mode === 'detect');
+  const flagged = a => DET ? ['bad', 'warn'].includes(WSMode.kind(a)) : (a.report && priorityKind(a.report.review_priority) !== 'ok');
 
   async function poll() {
     let s;
@@ -96,10 +97,11 @@
       if (!primed) return;
       if (a.report) {
         const p = a.report.review_priority || 'routine';
-        const kind = priorityKind(p);
-        toast(kind, (kind === 'ok' ? '◉ ' : '⚠ ') + 'Cosmos: ' + (a.report.task_context || 'Comparison complete'),
+        const kind = DET ? WSMode.kind(a) : priorityKind(p);
+        if (DET) toast(kind, (kind === 'ok' ? '◉ ' : '⚠ ') + WSMode.title(a), WSMode.label(a), 7000);
+        else toast(kind, (kind === 'ok' ? '◉ ' : '⚠ ') + 'Cosmos: ' + (a.report.task_context || 'Comparison complete'),
           `priority: ${p} · similarity ${a.similarity ? a.similarity.toFixed(2) : '–'}`, 7000);
-      } else if (a.status === 'no_reference') {
+      } else if (a.status === 'no_reference' && !DET) {
         toast('step', '◎ Baseline captured', 'First window for this person. No change claim yet.', 4000);
       }
     });

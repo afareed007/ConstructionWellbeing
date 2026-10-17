@@ -16,7 +16,7 @@ function buildEvents(){
       title:kind==="baseline"?`Baseline captured · Track ${c.track_id}`:(r.task_context||a.summary||"Comparison complete"),
       priority:r.review_priority||(kind==="baseline"?"baseline":"routine"),
       changes:r.observable_changes||[],summary:r.human_review_summary||a.summary||"",sim:a.similarity};
-  }).sort((x,y)=>x.at-y.at);
+  }).map(e=>{if(!(window.WSMode&&WSMode.mode==="detect"))return e;const a=state.analyses.find(x=>x.id===e.id);const k=WSMode.kind(a,rec.filename);return {...e,kind:k==="base"?"baseline":k,title:WSMode.title(a,rec.filename),priority:WSMode.label(a,rec.filename),sim:null};}).sort((x,y)=>x.at-y.at);
 }
 async function load(){
   state=await fetch("/api/state").then(r=>r.json());
@@ -85,3 +85,9 @@ $("live").onclick=goLive;$("skip").onclick=skip;
 $("speed").onchange=()=>v.playbackRate=+$("speed").value;
 $("rec").onchange=()=>{stop();pickRec();};
 load().catch(()=>{$("nowtext").textContent="Couldn't reach the WorkSight server. Check it's running, then reload.";});
+
+if(window.WSMode&&WSMode.mode==="detect"){
+  const L=document.querySelector(".panel .label");if(L)L.textContent="Camera timeline · red = hazard · amber = fatigue cue · green = clear · blue = not described";
+  const sp=document.querySelectorAll(".stat span");if(sp[3])sp[3].textContent="clear";if(sp[4])sp[4].textContent="hazards + fatigue cues";
+  const sub=document.querySelector(".sub");if(sub)sub.textContent="Detect mode: every window is checked for hazards and fatigue cues on its own. No comparison with earlier footage.";
+}

@@ -4,7 +4,8 @@ const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&g
 const fmt=s=>{s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
 const COL={ok:"var(--ok)",warn:"var(--warn)",bad:"var(--bad)",base:"var(--base)"};
 const RANK={base:0,ok:1,warn:2,bad:3};
-const kindOf=a=>{if(a.status==="no_reference"||!a.report)return"base";const p=a.report.review_priority||"";return /high|urgent|check/i.test(p)?"bad":/review|elevated|medium|attention/i.test(p)?"warn":"ok"};
+const DET=!!(window.WSMode&&WSMode.mode==="detect");const TT=(a,fb)=>DET?WSMode.title(a):(a.report?.task_context||fb);const PR=a=>DET?WSMode.label(a):(a.report?.review_priority||"routine");
+const kindOf=a=>{if(DET)return WSMode.kind(a);if(a.status==="no_reference"||!a.report)return"base";const p=a.report.review_priority||"";return /high|urgent|check/i.test(p)?"bad":/review|elevated|medium|attention/i.test(p)?"warn":"ok"};
 const ZONES=[
   {id:"roof",name:"Roof deck",x:10,y:10,w:150,h:70},
   {id:"scaf",name:"Scaffold A",x:170,y:10,w:85,h:70},
@@ -24,7 +25,7 @@ function zoneFor(r){
   if(/forklift|carrying|load/.test(s))return"load";
   return"walk";
 }
-const truth=r=>{const f=(r.filename||"").toLowerCase();if(/(^|[_-])unsafe/.test(f))return"unsafe";if(/(^|[_\/-])\d-safe|[_-]safe-/.test(f))return"safe";return null};
+const truth=r=>{const m=(r.filename||"").toLowerCase().match(/(?:^|[_\/])\d-(unsafe|safe)-/);return m?m[1]:null};
 const nice=r=>{const f=(r.filename||"").replace(/\.mp4$/i,"");const m=f.match(/\d-(?:unsafe|safe)-([a-z-]+)/i);return m?m[1].replace(/-/g," "):f.replace(/^(construction-posture|factory-safe-unsafe-behaviours)_/,"").replace(/[_-]+/g," ").slice(0,40)};
 let first=true,seenRec=new Set(),seenAn=new Set(),feeds=[],sel=null,camNo={};
 function toast(cls,title,sub,ms){const t=document.createElement("div");t.className="toast k-"+(cls||"base");t.innerHTML=`<b>${esc(title)}</b>${sub?`<small>${esc(sub)}</small>`:""}`;$("toasts").prepend(t);while($("toasts").children.length>4)$("toasts").lastChild.remove();setTimeout(()=>t.remove(),ms||6000)}
@@ -99,7 +100,7 @@ function renderAlerts(){
   const items=[];
   feeds.forEach(f=>{
     if(f.gt==="unsafe")items.push({f,kind:"bad",t:f.r.imported_at,title:`Unsafe behaviour · ${f.name}`,sub:"dataset label",text:f.summary});
-    f.an.filter(a=>a.report).forEach(a=>items.push({f,kind:a.kind,t:a.created_at,title:a.report.task_context||"Comparison",sub:`${fmt(a.clip?.offset)} · ${a.report.review_priority||"routine"}`,text:a.report.human_review_summary||""}));
+    f.an.filter(a=>a.report).forEach(a=>items.push({f,kind:a.kind,t:a.created_at,title:TT(a,"Comparison"),sub:`${fmt(a.clip?.offset)} · ${PR(a)}`,text:a.report.human_review_summary||""}));
   });
   items.sort((a,b)=>(RANK[b.kind]>=2)-(RANK[a.kind]>=2)||(b.t||0)-(a.t||0));
   $("alerts").innerHTML=items.length?items.slice(0,40).map(x=>`<button class="al" data-id="${x.f.r.id}"><i class="k-${x.kind}"></i><span><b>${esc(x.title)}</b><small>${esc(x.f.cam)} · ${esc(x.sub)}</small><p>${esc(x.text)}</p></span></button>`).join(""):'<div class="empty">No findings yet.</div>';
@@ -110,7 +111,7 @@ function openFeed(id){
   const f=feeds.find(x=>x.r.id===id);if(!f)return;selectFeed(id);
   $("dv").src="/media/"+f.r.media_path;
   $("dinfo").innerHTML=`<h2>${esc(f.cam)} · ${esc(f.name)}</h2><div class="foot">${esc(f.r.task||"")} · ${esc(ZONES.find(z=>z.id===f.zone).name)} · ${f.people} people · ${f.windows} windows ${f.gt?`· <span class="chip ${f.gt}">${f.gt}</span>`:""}</div>`+
-    (f.an.length?f.an.map(a=>`<div class="find k-${a.kind}"><b>${esc(a.report?.task_context||a.summary||"Baseline")}</b><div class="foot">${fmt(a.clip?.offset)}–${fmt((a.clip?.offset||0)+(a.clip?.duration||0))} · Track ${esc(a.clip?.track_id)} · ${esc(a.report?.review_priority||(a.kind==="base"?"baseline":""))}${a.similarity?` · sim ${a.similarity.toFixed(2)}`:""}</div>${a.report?.observable_changes?.length?`<ul>${a.report.observable_changes.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`:""}</div>`).join(""):'<p class="foot">No findings yet.</p>');
+    (f.an.length?f.an.map(a=>`<div class="find k-${a.kind}"><b>${esc(TT(a,a.summary||"Baseline"))}</b><div class="foot">${fmt(a.clip?.offset)}–${fmt((a.clip?.offset||0)+(a.clip?.duration||0))} · Track ${esc(a.clip?.track_id)} · ${esc(DET?PR(a):(a.report?.review_priority||(a.kind==="base"?"baseline":"")))}${a.similarity&&!DET?` · sim ${a.similarity.toFixed(2)}`:""}</div>${a.report?.observable_changes?.length?`<ul>${a.report.observable_changes.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`:""}</div>`).join(""):'<p class="foot">No findings yet.</p>');
   if(!$("dlg").open)$("dlg").showModal();
 }
 $("dlgx").onclick=()=>{$("dlg").close();$("dv").pause()};
@@ -119,7 +120,7 @@ async function poll(){
   let s;try{s=await fetch("/api/state").then(r=>r.json())}catch{return}
   feeds=build(s);
   feeds.forEach(f=>{if(!seenRec.has(f.r.id)){seenRec.add(f.r.id);if(!first)toast(f.kind==="bad"?"bad":"base","● New feed online",`${f.cam} · ${f.name}`,5000)}
-    f.an.forEach(a=>{if(seenAn.has(a.id))return;seenAn.add(a.id);if(!first&&a.report)toast(a.kind,(a.kind==="ok"?"◉ ":"⚠ ")+(a.report.task_context||"Cosmos finding"),`${f.cam} · ${a.report.review_priority||"routine"}`,6500)})});
+    f.an.forEach(a=>{if(seenAn.has(a.id))return;seenAn.add(a.id);if(!first&&a.report)toast(a.kind,(a.kind==="ok"?"◉ ":"⚠ ")+TT(a,"Cosmos finding"),`${f.cam} · ${PR(a)}`,6500)})});
   const job=(s.jobs||[]).find(j=>j.status!=="completed"&&j.status!=="failed");
   $("badge").className="badge"+(job?" on":"");$("badge").textContent=job?"● PROCESSING":"● LIVE";
   $("s-stage").textContent=job?`${job.label||"Recording"} · ${job.stage||job.status}`:"Idle · all feeds processed";
