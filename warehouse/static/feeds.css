@@ -40,7 +40,7 @@ h1{font-size:26px;margin:0;font-weight:800}
 .tile video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000;display:block}
 .hud{position:absolute;left:6px;top:6px;display:flex;gap:4px;font-family:var(--mono);font-size:10.5px;pointer-events:none;flex-wrap:wrap;right:6px}
 .hud span{background:rgba(0,0,0,.65);color:#fff;padding:2px 6px;border-radius:3px}
-.hud .live{background:#d92d20}
+.hud .live{display:none}
 .hz{position:absolute;right:6px;top:6px;background:var(--bad);color:#fff;font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:999px;font-weight:500}
 .tile.warn .hz{background:var(--warn);color:#1a1205}
 .tbody{padding:8px 10px;display:grid;gap:4px}
