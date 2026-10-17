@@ -2,20 +2,19 @@
 .ws-mode{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--panel,#171c23);margin-left:14px;vertical-align:middle}
 .ws-mode button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;cursor:pointer}
 .ws-mode button[aria-pressed="true"]{background:var(--accent);color:#fff}
-html[data-mode="detect"] .ws-mode button[aria-pressed="true"]{color:#1a0d05}
 .ws-mode button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ws-left{display:flex;align-items:center}
 .brand+.ws-mode{flex:0 0 auto}
 
 /* Compare mode = light. Covers both token sets (review overlay + live/feeds pages). */
-html[data-mode="compare"]{
+html[data-mode]{
   --ink:#1f2a24;--paper:#f5f6f2;--green:#2f6b4a;--mint:#dcebd0;
   --bg:#f5f6f2;--panel:#ffffff;--panel2:#f0f2ed;--fg:#1f2a24;--muted:#5f6b62;--line:#dfe3dc;
   --accent:#2f6b4a;--ok:#1f7a4d;--warn:#a86b12;--bad:#c0392b;--base:#3d6fa8;color-scheme:light}
-html[data-mode="compare"] body{background:var(--bg,#f5f6f2);color:var(--fg,#1f2a24)}
-html[data-mode="compare"] .primary,html[data-mode="compare"] button.primary,html[data-mode="compare"] .brand-mark{color:#fff!important}
-html[data-mode="compare"] .lv-toast,html[data-mode="compare"] .toast{box-shadow:0 8px 22px rgba(30,40,30,.15)}
-html[data-mode="compare"] #lv-bar .lv-badge{background:#5f6b62}
+html[data-mode] body{background:var(--bg,#f5f6f2);color:var(--fg,#1f2a24)}
+html[data-mode] .primary,html[data-mode] button.primary,html[data-mode] .brand-mark{color:#fff!important}
+html[data-mode] .lv-toast,html[data-mode] .toast{box-shadow:0 8px 22px rgba(30,40,30,.15)}
+html[data-mode] #lv-bar .lv-badge{background:#5f6b62}
 
 /* Detect mode: no comparison anywhere. */
 html[data-mode="detect"] .reference-card,
@@ -35,3 +34,38 @@ html[data-mode="detect"] #pair-play::after{content:""}
 .ws-chip.ok{color:var(--ok,#4cc38a)}
 .ws-chip.ctx{color:var(--muted)}
 nav .ws-mode,.topbar .ws-mode{margin-right:auto}
+
+/* ---- One consistent SiteMind-style light skin for Review and Live pages ---- */
+html[data-mode]{--bg:#f3f3f1;--paper:#f3f3f1;--panel:#ffffff;--panel2:#ffffff;--fg:#1b1d1c;--ink:#1b1d1c;--muted:#6f7471;--line:#e7e7e4;
+  --accent:#1b1d1c;--green:#1b1d1c;--ok:#2f9e5b;--warn:#e0a21b;--bad:#e2493b;--base:#5b8fd6}
+html[data-mode] body{background:var(--bg)}
+html[data-mode] .brand-mark{background:#1b1d1c!important;color:#fff!important;border-radius:8px}
+html[data-mode] .ws-mode button[aria-pressed="true"]{background:#1b1d1c;color:#fff}
+html[data-mode] .primary,html[data-mode] button.primary{background:#1b1d1c!important;border-color:#1b1d1c!important;color:#fff!important;border-radius:999px}
+html[data-mode] nav,html[data-mode] .topbar{border-bottom-color:transparent}
+html[data-mode] .navlinks a.active{background:#fff;border-color:var(--line);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+/* cards */
+html[data-mode] .panel,html[data-mode] .video-card,html[data-mode] .result-bar,html[data-mode] .playback-bar,html[data-mode] .details-panel,
+html[data-mode] .matches-section,html[data-mode] .history-section,html[data-mode] .alert-queue,html[data-mode] #lv-bar,html[data-mode] .empty-state{
+  background:#fff!important;border:1px solid var(--line)!important;border-radius:14px!important;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+html[data-mode] .stats,html[data-mode] #lv-stats{gap:10px;background:transparent!important;border:0!important;overflow:visible}
+html[data-mode] .stat,html[data-mode] #lv-stats>div{background:#fff!important;border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+html[data-mode] .current-card{border-color:var(--line)!important}
+html[data-mode] video{border-radius:10px}
+/* pills over video, white like SiteMind */
+html[data-mode] .hud span,html[data-mode] .lv-hud span{background:rgba(255,255,255,.94)!important;color:var(--fg)!important;border-radius:999px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+html[data-mode] .hud .live,html[data-mode] .lv-hud .live{display:inline-flex;align-items:center;gap:5px;animation:none!important}
+html[data-mode] .hud .live::first-letter,html[data-mode] .lv-hud .live::first-letter{color:var(--bad)}
+html[data-mode] #lv-bar .lv-badge,html[data-mode] .badge{background:#fff!important;color:var(--fg)!important;border:1px solid var(--line);border-radius:999px;animation:none!important}
+html[data-mode] #lv-bar.on .lv-badge,html[data-mode] .badge.on{color:var(--bad)!important;border-color:var(--bad)}
+html[data-mode] #lv-bar .lv-fill{background:#1b1d1c}
+html[data-mode] #lv-bar .lv-step.now{border-color:#1b1d1c;color:#1b1d1c}
+/* lists, events, toasts */
+html[data-mode] .item,html[data-mode] .al,html[data-mode] .alert-list>*{background:#fff!important;border:1px solid var(--line)!important;border-radius:10px!important}
+html[data-mode] .toast,html[data-mode] .lv-toast{background:#fff!important;color:var(--fg)!important;border-radius:12px!important;box-shadow:0 8px 22px rgba(0,0,0,.12)!important}
+html[data-mode] .tl{background:#fafaf8}
+html[data-mode] .playhead{background:#1b1d1c}
+html[data-mode] select,html[data-mode] input,html[data-mode] textarea,html[data-mode] button:not(.primary):not(.item):not(.tile):not(.al):not([data-m]){background:#fff!important;color:var(--fg)!important;border-color:var(--line)!important;border-radius:999px}
+html[data-mode] .view-switch{background:#f0f0ee!important;border-radius:999px}
+html[data-mode] .view-switch button.active{background:#fff!important;border-radius:999px}
+html[data-mode] .tile .hud .live{display:none!important}

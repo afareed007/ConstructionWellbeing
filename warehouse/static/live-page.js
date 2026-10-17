@@ -16,7 +16,7 @@ function buildEvents(){
       title:kind==="baseline"?`Baseline captured · Track ${c.track_id}`:(r.task_context||a.summary||"Comparison complete"),
       priority:r.review_priority||(kind==="baseline"?"baseline":"routine"),
       changes:r.observable_changes||[],summary:r.human_review_summary||a.summary||"",sim:a.similarity};
-  }).map(e=>{if(!(window.WSMode&&WSMode.mode==="detect"))return e;const a=state.analyses.find(x=>x.id===e.id);const k=WSMode.kind(a,rec.filename);return {...e,kind:k==="base"?"baseline":k,title:WSMode.title(a,rec.filename),priority:WSMode.label(a,rec.filename),sim:null};}).sort((x,y)=>x.at-y.at);
+  }).map(e=>{if(!(window.WSMode&&WSMode.mode==="detect"))return e;const a=state.analyses.find(x=>x.id===e.id);const k=WSMode.kind(a,rec.filename);return {...e,kind:k==="base"?"baseline":k,title:WSMode.title(a,rec.filename),priority:WSMode.label(a,rec.filename),sim:null,summary:a&&a.report?e.summary:"Window checked; no Cosmos description for this window yet."};}).sort((x,y)=>x.at-y.at);
 }
 async function load(){
   state=await fetch("/api/state").then(r=>r.json());

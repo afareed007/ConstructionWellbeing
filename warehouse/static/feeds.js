@@ -68,7 +68,7 @@ function renderGrid(){
     const hz=t.querySelector(".hz");hz.hidden=!f.hz;hz.textContent="⚠ "+f.hz;
     t.querySelector(".tname").textContent=f.name;
     t.querySelector(".gt").innerHTML=f.gt?`<span class="chip ${f.gt}">${f.gt}</span>`:"";
-    t.querySelector(".tsum").textContent=f.summary;
+    t.querySelector(".tsum").textContent=(window.WSMode&&WSMode.mode==="detect"&&/no eligible earlier reference|baseline/i.test(f.summary||""))?"Window checked · waiting for Cosmos description":f.summary;
     const DETM=!!(window.WSMode&&WSMode.mode==="detect");
     const ST={bad:"Hazard",warn:DETM?"Fatigue cue":"Check-in",ok:"OK",base:"Baseline"};
     const st=t.querySelector(".st");st.textContent=ST[f.kind]||"OK";st.className="st s-"+f.kind;
