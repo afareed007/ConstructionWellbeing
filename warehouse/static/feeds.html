@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WorkSight Feeds</title>
+<link rel="stylesheet" href="/static/feeds.css?v=1">
+
+</head>
+<body>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="/"><span class="brand-mark">W</span>WorkSight</a>
+    <div class="navlinks"><a href="/">Review</a><a href="/static/live.html">Live</a><a href="/static/feeds.html" class="active">Feeds</a></div>
+  </nav>
+  <div class="head">
+    <div><h1>Site command centre</h1><p class="sub">Every camera on site, checked by YOLO, ByteTrack and Cosmos. Feeds with hazards light up on the grid and the map.</p></div>
+    <span class="badge" id="badge">IDLE</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="s-cams">0</b><span>cameras online</span></div>
+    <div class="stat"><b id="s-people">0</b><span>people tracked</span></div>
+    <div class="stat"><b id="s-win">0</b><span>windows checked</span></div>
+    <div class="stat"><b id="s-hz">0</b><span>feeds with hazards</span></div>
+    <div class="stat"><span>processing</span><span class="stage" id="s-stage">Idle</span><div class="prog"><i id="s-prog"></i></div></div>
+  </div>
+  <div class="layout">
+    <section class="panel">
+      <p class="label"><span>Camera feeds</span><span id="gridnote"></span></p>
+      <div class="grid" id="grid"><div class="empty">Waiting for the first processed feed…</div></div>
+    </section>
+    <aside class="side">
+      <section class="panel">
+        <p class="label"><span>Site map · schematic, not GPS</span><span class="legend"><i class="lg-ok">●</i> ok <i class="lg-warn">●</i> review <i class="lg-bad">●</i> hazard</span></p>
+        <svg class="map" id="map" viewBox="0 0 360 260" role="img" aria-label="Schematic site plan with camera positions"></svg>
+      </section>
+      <section class="panel">
+        <p class="label"><span>Findings, newest first</span></p>
+        <div class="alerts" id="alerts"><div class="empty">No findings yet.</div></div>
+      </section>
+    </aside>
+  </div>
+  <p class="foot">Simulated live feeds replay processed footage. Findings suggest a human check-in and do not diagnose wellbeing. Safe/unsafe chips come from the dataset's own labels.</p>
+</div>
+<dialog id="dlg"><button class="x" id="dlgx" aria-label="Close">×</button><div class="dlg"><video id="dv" controls muted playsinline autoplay loop></video><div class="info" id="dinfo"></div></div></dialog>
+<script src="/static/feeds.js?v=1" defer></script>
+</body>
+</html>
