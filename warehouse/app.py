@@ -88,7 +88,8 @@ def create_app(root=None, services=None):
     pipeline = Pipeline(root, store, services if services is not None else Services())
     app = FastAPI(title='WorkSight — warehouse evidence', docs_url=None, redoc_url=None)
     app.state.store, app.state.pipeline = store, pipeline
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1', 'localhost', 'testserver'])
+    extra_hosts = [h.strip() for h in os.environ.get('WORKSIGHT_ALLOWED_HOSTS', '').split(',') if h.strip()]
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1', 'localhost', 'testserver', *extra_hosts])
     app.add_middleware(UploadBodyLimit)
     app.add_middleware(BrowserBoundary)
 
