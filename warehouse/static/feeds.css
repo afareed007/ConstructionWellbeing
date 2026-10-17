@@ -94,3 +94,45 @@ svg .s-warn{stroke:var(--warn);fill:none}svg .s-bad{stroke:var(--bad);fill:none}
 svg .dotc{stroke:var(--bg);stroke-width:1.5}
 
 .legend{white-space:nowrap}.legend i{font-style:normal}.lg-ok{color:var(--ok)}.lg-warn{color:var(--warn)}.lg-bad{color:var(--bad)}
+
+/* ---- status pill + footer (both modes) ---- */
+.hud .st{display:inline-flex;align-items:center;gap:5px}
+.hud .st::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.hud .st.s-bad::before{background:var(--bad)}.hud .st.s-warn::before{background:var(--warn)}.hud .st.s-base::before{background:var(--base)}
+.tfoot{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:6px;margin-top:2px}
+.tfoot span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---- light (Compare) skin, closer to the SiteMind look ---- */
+html[data-mode="compare"]{--bg:#f3f3f1;--panel:#ffffff;--panel2:#ffffff;--fg:#1b1d1c;--muted:#6f7471;--line:#e7e7e4;
+  --accent:#1b1d1c;--ok:#2f9e5b;--warn:#e0a21b;--bad:#e2493b;--base:#5b8fd6}
+html[data-mode="compare"] body{font-size:14px}
+html[data-mode="compare"] nav{border-bottom-color:transparent}
+html[data-mode="compare"] .brand-mark{background:#1b1d1c;color:#fff;border-radius:8px}
+html[data-mode="compare"] .navlinks a.active{background:#fff;border-color:var(--line);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+html[data-mode="compare"] .panel{border-radius:14px;border-color:var(--line);box-shadow:0 1px 2px rgba(0,0,0,.04)}
+html[data-mode="compare"] .stats{gap:10px;background:transparent;border:0;overflow:visible}
+html[data-mode="compare"] .stat{border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+html[data-mode="compare"] .badge{background:#fff;color:var(--fg);border:1px solid var(--line);border-radius:999px}
+html[data-mode="compare"] .badge.on{background:#fff;color:var(--bad);border-color:var(--bad);animation:none}
+html[data-mode="compare"] .grid{gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+html[data-mode="compare"] .tile,html[data-mode="compare"] .tile.ok,html[data-mode="compare"] .tile.warn,html[data-mode="compare"] .tile.bad,html[data-mode="compare"] .tile.base{
+  background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .15s,transform .15s}
+html[data-mode="compare"] .tile:hover{box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-1px)}
+html[data-mode="compare"] .tile.sel{outline:2px solid var(--fg);outline-offset:2px}
+html[data-mode="compare"] .tile video{border-radius:14px 14px 0 0}
+html[data-mode="compare"] .hud{left:10px;top:10px;right:auto;font-family:var(--display);font-size:11.5px}
+html[data-mode="compare"] .hud span{background:rgba(255,255,255,.94);color:var(--fg);border-radius:999px;padding:3px 9px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+html[data-mode="compare"] .hud .cam,html[data-mode="compare"] .hud .task{display:none}
+html[data-mode="compare"] .hz{right:10px;top:10px;background:rgba(255,255,255,.94);color:var(--fg);border-radius:999px;box-shadow:0 1px 2px rgba(0,0,0,.12);font-family:var(--display);padding:3px 9px}
+html[data-mode="compare"] .tile.warn .hz{background:rgba(255,255,255,.94);color:var(--fg)}
+html[data-mode="compare"] .tbody{padding:12px 14px;gap:6px}
+html[data-mode="compare"] .tsum{color:var(--fg);font-size:13px;min-height:38px}
+html[data-mode="compare"] .tname{font-weight:600}
+html[data-mode="compare"] .al{border-radius:10px;background:#fff}
+html[data-mode="compare"] .toast{background:#fff;border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.12)}
+html[data-mode="compare"] dialog{border-radius:16px}
+html[data-mode="compare"] svg .m-bg{fill:#fafaf8}
+html[data-mode="compare"] svg .z{fill:#ffffff}
+html[data-mode="compare"] svg .z.hot{fill:#fdecea;stroke:var(--bad)}
+html[data-mode="compare"] svg .dotc{stroke:#ffffff}
+html[data-mode="compare"] .ws-mode button[aria-pressed="true"]{background:#1b1d1c;color:#fff}

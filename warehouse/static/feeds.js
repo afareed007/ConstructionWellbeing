@@ -57,7 +57,7 @@ function renderGrid(){
     if(!t){
       t=document.createElement("button");t.className="tile"+(first?"":" new");t.dataset.id=f.r.id;
       const auto=i<9;
-      t.innerHTML=`<video muted loop playsinline preload="metadata" ${auto?"autoplay":""} ${f.thumb?`poster="/media/${esc(f.thumb)}"`:""} src="/media/${esc(f.r.media_path)}"></video><div class="hud"><span class="live">● LIVE</span><span class="cam"></span><span class="task"></span></div><span class="hz" hidden></span><div class="tbody"><div class="trow"><span class="tname"></span><span class="gt"></span></div><div class="tsum"></div></div>`;
+      t.innerHTML=`<video muted loop playsinline preload="metadata" ${auto?"autoplay":""} ${f.thumb?`poster="/media/${esc(f.thumb)}"`:""} src="/media/${esc(f.r.media_path)}"></video><div class="hud"><span class="live">● LIVE</span><span class="st"></span><span class="cam"></span><span class="task"></span></div><span class="hz" hidden></span><div class="tbody"><div class="trow"><span class="tname"></span><span class="gt"></span></div><div class="tsum"></div><div class="tfoot"><span class="tclip"></span><span class="tcat"></span></div></div>`;
       const v=t.querySelector("video");
       if(!auto){t.addEventListener("mouseenter",()=>v.play().catch(()=>{}));t.addEventListener("mouseleave",()=>v.pause())}
       t.onclick=()=>openFeed(f.r.id);
@@ -69,6 +69,11 @@ function renderGrid(){
     t.querySelector(".tname").textContent=f.name;
     t.querySelector(".gt").innerHTML=f.gt?`<span class="chip ${f.gt}">${f.gt}</span>`:"";
     t.querySelector(".tsum").textContent=f.summary;
+    const DETM=!!(window.WSMode&&WSMode.mode==="detect");
+    const ST={bad:"Hazard",warn:DETM?"Fatigue cue":"Check-in",ok:"OK",base:"Baseline"};
+    const st=t.querySelector(".st");st.textContent=ST[f.kind]||"OK";st.className="st s-"+f.kind;
+    t.querySelector(".tclip").textContent=(f.r.filename||"").replace(/\.mp4$/i,"").split(/[_\/]/).pop().slice(0,24);
+    t.querySelector(".tcat").textContent=f.r.task||"";
     g.appendChild(t);
   });
   $("gridnote").textContent=`${feeds.length} feeds · hazards first`;
